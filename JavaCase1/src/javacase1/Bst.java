@@ -10,74 +10,81 @@ package javacase1;
  * @author scherr3143
  */
 public class Bst {
-    
     nNode start;
-    //nNode current;
-    
-    public Bst(){}
-    
-    public void add(int data){
-        if (start==null){
+    public Bst() {
+    }
+    public void add(Comparable data) {
+        if (start == null) {
             start = new nNode(data);
-            //current = start;
-        }
-        else{
+        } else {
             addNode(start, data);
         }
     }
-    public void addNode(nNode current, int data){
-        if(data <= current.getData()){
-            if(current.left == null){
+    public void addNode(nNode current, Comparable data) {
+        if (data.compareTo(current.getData())<=0) {
+            if (current.left == null) {
                 current.left = new nNode(data);
-            }
-            else
+            } else {
                 addNode(current.left, data);
-        }
-        else{
-            if(current.right == null){
-                current.right = new nNode(data);
             }
-            else
-                addNode(current.right, data);
+        } else if (current.right == null) {
+            current.right = new nNode(data);
+        } else {
+            addNode(current.right, data);
         }
     }
-    public void printTree(nNode node){
-        if(node.left != null){
+    public void printTree(nNode node) {
+        if (node.left != null) {
             printTree(node.left);
         }
         System.out.println(node.getData());
-        if(node.right != null){
+        if (node.right != null) {
             printTree(node.right);
-        }   
+        }
     }
-    public void printTree(){
+    public void printTree() {
         printTree(start);
+    }
+    public boolean searchTree(int data) {
+        return searchTree(start, data);
+    }
+    public boolean searchTree(nNode current, Comparable data) {
+
+        if (current.getData().compareTo(data) == 0) {
+            return true;
+        } else if (data.compareTo(current.getData())<0 && current.left != null) {
+            return searchTree(current.left, data);
+        } else if (data.compareTo(current.getData())>0 && current.right != null) {
+            return searchTree(current.right, data);
+        } else {
+            return false;
+        }
     }
     public static void main(String[] args) {
         Bst bst = new Bst();
         java.util.Random r = new java.util.Random();
-        for(int i=0;i<20;i++){
-            bst.add(r.nextInt(10000));
+        for (int i = 0; i < 20; i++) {
+            bst.add(r.nextInt(100));
         }
         bst.printTree();
+
+        System.out.println(bst.searchTree(50));
     }
 }
 
-class nNode{
-    
-    private int data;
+class nNode {
+    private Comparable data;
     public nNode left;
     public nNode right;
-    
-    public nNode(){}
-    
-    public nNode(int data){
+    public nNode() {
+    }
+    public nNode(Comparable data) {
         setData(data);
     }
-    public void setData(int data){
+    public void setData(Comparable data) {
         this.data = data;
     }
-    public int getData(){
+    public Comparable getData() {
         return data;
     }
 }
