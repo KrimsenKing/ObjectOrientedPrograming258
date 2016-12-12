@@ -33,6 +33,34 @@ public class Bst {
             addNode(current.right, data);
         }
     }
+    public void delete(Comparable target){
+        delete(start,target);
+    }
+    public void delete(nNode current, Comparable target){
+        if(current.getData().compareTo(target)>0 && current.left!=null){
+            if(current.left.getData().compareTo(target)==0){
+                System.out.println("Parent found "+current.left.getData());
+            }
+            else{
+                delete(current.left,target);
+            }
+        }
+        else if(current.getData().compareTo(target)<0 && current.right!=null){
+            if(current.right.getData().compareTo(target)==0){
+                System.out.println("Parent found "+current.right.getData());
+                if(current.right.left == null && current.right.right == null){
+                    //??
+                }
+            }
+            else{
+                delete(current.right, target);
+            }
+        }
+        else{
+            System.out.println("Parent found ");
+                    
+        }
+    }
     public void printTree(nNode node) {
         if (node.left != null) {
             printTree(node.left);
