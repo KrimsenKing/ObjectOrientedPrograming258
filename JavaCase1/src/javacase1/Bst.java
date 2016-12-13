@@ -34,12 +34,18 @@ public class Bst {
         }
     }
     public void delete(Comparable target){
+        
         delete(start,target);
     }
     public void delete(nNode current, Comparable target){
+        
+        boolean isRight = false;
+        nNode nodeToDelete = null;
+        
         if(current.getData().compareTo(target)>0 && current.left!=null){
             if(current.left.getData().compareTo(target)==0){
-                System.out.println("Parent found "+current.left.getData());
+                System.out.println("Parent found "+current.getData());
+                nodeToDelete = current.left;
             }
             else{
                 delete(current.left,target);
@@ -47,19 +53,60 @@ public class Bst {
         }
         else if(current.getData().compareTo(target)<0 && current.right!=null){
             if(current.right.getData().compareTo(target)==0){
-                System.out.println("Parent found "+current.right.getData());
-                if(current.right.left == null && current.right.right == null){
-                    //??
-                }
+                System.out.println("Parent found "+current.getData());
+                isRight=true;
+                nodeToDelete=current.right;
             }
             else{
                 delete(current.right, target);
             }
         }
         else{
-            System.out.println("Parent found ");
-                    
+            System.out.println("node found " + current.getData());
         }
+        if (nodeToDelete != null){
+            if(nodeToDelete.left==null && nodeToDelete.right==null){
+                if(isRight)
+                    current.right = null;
+                else
+                    current.left = null;
+            }
+            else if(nodeToDelete.right==null){
+                if(isRight)
+                    current.right = nodeToDelete.left;
+                else
+                    current.left = nodeToDelete.left;
+            }
+            else if(nodeToDelete.right.left==null){
+                nodeToDelete.right.left = nodeToDelete.left;
+                current.right = nodeToDelete.right;
+            }
+            else if(nodeToDelete.right.left!=null){
+                nNode leftMost=findTheLeftMostNode(nodeToDelete.right);
+                leftMost.right = nodeToDelete.right;
+                current.left = leftMost;
+                deleteTheLeftMostNode(nodeToDelete.right);
+            }
+        }
+    }
+    
+    public nNode findTheLeftMostNode(nNode node){
+        if(node.left==null)
+            return node;
+        else
+            return findTheLeftMostNode(node.left);
+    }
+    public nNode findTheRightMostNode(nNode node){
+        if(node.right==null)
+            return node;
+        else
+            return findTheRightMostNode(node.right);
+    }
+    public void deleteTheLeftMostNode(nNode node){
+        if(node.left.left==null)
+            node.left = null;
+        else
+            deleteTheLeftMostNode(node.left);
     }
     public void printTree(nNode node) {
         if (node.left != null) {
@@ -90,13 +137,28 @@ public class Bst {
     }
     public static void main(String[] args) {
         Bst bst = new Bst();
-        java.util.Random r = new java.util.Random();
-        for (int i = 0; i < 20; i++) {
-            bst.add(r.nextInt(100));
-        }
+        //java.util.Random r = new java.util.Random();
+        //for (int i = 0; i < 20; i++) {
+        //    bst.add(r.nextInt(100));
+        //}
+        
+        bst.add(50);
+        bst.add(25);
+        bst.add(75);
+        bst.add(13);
+        bst.add(35);
+        bst.add(66);
+        bst.add(85);
+        bst.add(17);
+        bst.add(63);
+        bst.add(90);
+        bst.add(15);
+        bst.add(18);
+        
         bst.printTree();
-
-        System.out.println(bst.searchTree(50));
+        bst.delete(50);
+        System.out.println("******");
+        bst.printTree();
     }
 }
 
