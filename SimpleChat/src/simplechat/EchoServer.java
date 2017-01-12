@@ -105,9 +105,10 @@ public class EchoServer extends AbstractServer
       System.out.println(client.toString() + " has connected to server.");
   }
   @Override
-  synchronized protected void clientDisconnected(ConnectionToClient client)
+  synchronized protected void clientException(ConnectionToClient client, Throwable exception)
   {
       System.out.println(client.toString() + " has disconnected from server.");
+      clientDisconnected(client);
   }
   //
 }

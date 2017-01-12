@@ -58,16 +58,58 @@ public class ChatClient extends AbstractClient
    */
   public void handleMessageFromClientUI(String message)
   {
-    try
-    {
-      sendToServer(message);
-    }
-    catch(IOException e)
-    {
-      clientUI.display
-        ("Could not send message to server.  Terminating client.");
-      quit();
-    }
+      if(message.charAt(0)=='#'){
+          handleClientCommand(message);
+      }
+      else{
+        try
+        {
+            sendToServer(message);
+        }
+        catch(IOException e)
+        {
+            clientUI.display
+            ("Could not send message to server.  Terminating client.");
+            quit();
+        }
+      }
+  }
+  
+  public void handleClientCommand(String message)
+  {
+      if(message.startsWith("#getPort")){
+          clientUI.display(String.valueOf(getPort()));
+      }
+      else if(message.startsWith("#setPort")){
+          if(!isConnected())
+            setPort(Integer.parseInt(message.split(" ")[1]));
+          else
+            clientUI.display("Please #logOff to change.");
+      }
+      else if(message.startsWith("#logOff")){
+        try
+        {closeConnection();}
+        catch(IOException ioe) 
+        {ioe.printStackTrace();}
+      }
+      else if(message.startsWith("#login")){
+        try
+        {openConnection();}
+        catch(IOException ioe) 
+        {ioe.printStackTrace();}
+      }
+      else if(message.startsWith("#getHost")){
+        clientUI.display(getHost());
+      }
+      else if(message.startsWith("#setHost")){
+          if(!isConnected())
+            setHost(message.split(" ")[1]);
+          else
+            clientUI.display("Please #logOff to change.");
+      }
+      else if(message.startsWith("#quit")){
+        quit();
+      }
   }
   
   /**
@@ -87,7 +129,6 @@ public class ChatClient extends AbstractClient
   protected void connectionException(Exception exception){
       System.out.println("Server shutdown");
       //After implementing connection closed, call it here...
-      
       connectionClosed();
   }
 }
