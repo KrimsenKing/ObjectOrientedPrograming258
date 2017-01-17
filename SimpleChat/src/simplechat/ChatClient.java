@@ -37,6 +37,14 @@ public class ChatClient extends AbstractClient
     openConnection();
   }
 
+  public ChatClient(String host, int port, String userName, ChatIF clientUI) 
+    throws IOException 
+  {
+    super(host, port); //Call the superclass constructor
+    this.clientUI = clientUI;
+    openConnection();
+    sendToServer("#login " + userName);
+  }
   
   //Instance methods ************************************************
     
@@ -92,7 +100,7 @@ public class ChatClient extends AbstractClient
         catch(IOException ioe) 
         {ioe.printStackTrace();}
       }
-      else if(message.startsWith("#login")){
+      else if(message.startsWith("#logOn")){
         try
         {openConnection();}
         catch(IOException ioe) 
