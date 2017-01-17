@@ -41,13 +41,14 @@ public class EchoServer extends AbstractServer
   public void handleMessageFromClient(Object msg, ConnectionToClient client)
   {
       String message = msg.toString();
+      System.out.println(message);
     if(message.charAt(0)=='#'){
         System.out.println("Command found");
         handleServerCommand(msg,client);
     }
     else{
         System.out.println("Message received: " + msg + " from " + client);
-        this.sendToAllClientsInRoom(msg,client);
+        this.sendToAllClients(msg);
     }
   }
     
@@ -72,7 +73,6 @@ public class EchoServer extends AbstractServer
   public void sendToAClient(Object msg, String target){
       
       String message = msg.toString();
-      
       String privateMessage = message.substring(message.indexOf(" "),message.length());
       privateMessage = privateMessage.trim();
       privateMessage = privateMessage.substring(privateMessage.indexOf(" "),privateMessage.length());

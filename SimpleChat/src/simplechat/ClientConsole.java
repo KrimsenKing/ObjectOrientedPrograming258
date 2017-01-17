@@ -139,7 +139,7 @@ public class ClientConsole implements ChatIF
     {
       userName = "Amon";
     }
-    ClientConsole chat= new ClientConsole(host, DEFAULT_PORT, userName);
+    ClientConsole chat= new ClientConsole(host, port, userName);
     chat.accept();  //Wait for console data
   }
 }
